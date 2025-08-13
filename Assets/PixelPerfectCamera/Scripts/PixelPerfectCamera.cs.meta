@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 820dff5ef6cfac54cafac9e301a77a6e
+timeCreated: 1539351626
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 100
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64563
+  packageName: Pixel Perfect Camera
+  packageVersion: 1.47
+  assetPath: Assets/PixelPerfectCamera/Scripts/PixelPerfectCamera.cs
+  uploadId: 381825

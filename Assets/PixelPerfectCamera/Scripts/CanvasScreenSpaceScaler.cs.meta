@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 16e9ad6afa96eb549a86864f240d4e40
+timeCreated: 1539351626
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 200
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64563
+  packageName: Pixel Perfect Camera
+  packageVersion: 1.47
+  assetPath: Assets/PixelPerfectCamera/Scripts/CanvasScreenSpaceScaler.cs
+  uploadId: 381825

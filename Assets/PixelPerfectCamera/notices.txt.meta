@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c28e0c189277faf4db28e426249b2c8c
+timeCreated: 1595408046
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64563
+  packageName: Pixel Perfect Camera
+  packageVersion: 1.47
+  assetPath: Assets/PixelPerfectCamera/notices.txt
+  uploadId: 381825

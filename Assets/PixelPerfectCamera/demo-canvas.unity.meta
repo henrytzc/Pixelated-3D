@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: af20c50176a754940966db5f2fcc03c0
+timeCreated: 1473089383
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64563
+  packageName: Pixel Perfect Camera
+  packageVersion: 1.47
+  assetPath: Assets/PixelPerfectCamera/demo-canvas.unity
+  uploadId: 381825
