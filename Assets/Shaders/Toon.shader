@@ -23,11 +23,13 @@ Shader "Custom/Toon"
         _ValPerStepDarkPct("Val Δ Dark / Step (%)", Range(-100,100)) = -20
         _SatPerStepBrightPct("Sat Δ Bright / Step (%)", Range(-100,100)) = -10
         _ValPerStepBrightPct("Val Δ Bright / Step (%)", Range(-100,100)) = 20
+        
+        [ToggleUI] _ReceiveShadows("Receive Shadows", Float) = 1.0
     }
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" "Queue"="Geometry" "UniversalMaterialType"="Lit" }
+        Tags { "RenderType"="Opaque" "Queue"="Geometry" "UniversalMaterialType"="Lit" "RenderPipeline"="UniversalPipeline" }
         LOD 200
         Cull Back
         ZWrite On
@@ -46,8 +48,9 @@ Shader "Custom/Toon"
             // URP lighting & features
             #pragma multi_compile _ _ADDITIONAL_LIGHTS
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX
-            #pragma multi_compile_fragment _ _MAIN_LIGHT_SHADOWS
-            #pragma multi_compile _ _SHADOWS_SOFT
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
+            #pragma shader_feature_local _RECEIVE_SHADOWS_OFF
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
 
@@ -74,6 +77,7 @@ Shader "Custom/Toon"
                 float  _ValPerStepDarkPct;   // -20
                 float  _SatPerStepBrightPct; // -10
                 float  _ValPerStepBrightPct; // +20
+                float  _ReceiveShadows;
             CBUFFER_END
 
             TEXTURE2D(_BaseMap); SAMPLER(sampler_BaseMap);
@@ -93,6 +97,7 @@ Shader "Custom/Toon"
                 float3 normalWS   : TEXCOORD1;
                 float2 uv         : TEXCOORD2;
                 float4 fogCoord   : TEXCOORD3;
+                float4 shadowCoord : TEXCOORD4;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
                 UNITY_VERTEX_OUTPUT_STEREO
             };
@@ -109,6 +114,11 @@ Shader "Custom/Toon"
                 o.positionCS = TransformWorldToHClip(o.positionWS);
                 o.uv         = TRANSFORM_TEX(v.uv, _BaseMap);
                 o.fogCoord   = ComputeFogFactor(o.positionCS.z);
+                #ifdef _MAIN_LIGHT_SHADOWS
+                o.shadowCoord = TransformWorldToShadowCoord(o.positionWS);
+                #else
+                o.shadowCoord = float4(0, 0, 0, 0);
+                #endif
                 return o;
             }
 
@@ -220,8 +230,15 @@ Shader "Custom/Toon"
 
                 half3 N = normalize(i.normalWS);
 
-                float4 shadowCoord = TransformWorldToShadowCoord(i.positionWS);
-                Light mainLight = GetMainLight(shadowCoord);
+                #ifdef _MAIN_LIGHT_SHADOWS
+                #ifndef _RECEIVE_SHADOWS_OFF
+                Light mainLight = GetMainLight(i.shadowCoord);
+                #else
+                Light mainLight = GetMainLight();
+                #endif
+                #else
+                Light mainLight = GetMainLight();
+                #endif
                 half NdotL = saturate(dot(N, mainLight.direction));
                 half mainLit = NdotL * mainLight.shadowAttenuation * mainLight.distanceAttenuation;
 
